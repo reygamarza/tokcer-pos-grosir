@@ -55,12 +55,12 @@
                 @endrole
 
                 @hasanyrole('Owner|Gudang')
-                <div class="pt-4 pb-1 px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Gudang & Stok</div>
-                <a href="#" class="flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800">
+               <div class="pt-4 pb-1 px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Gudang & Stok</div>
+                <a href="{{ route('gudang.pembelian.index') }}" class="flex items-center px-3 py-2.5 rounded-lg {{ request()->routeIs('gudang.pembelian.*') ? 'bg-emerald-600 text-white font-semibold' : 'text-slate-300 hover:bg-slate-800' }}">
                     Pembelian & Penerimaan
                 </a>
-                <a href="#" class="flex items-center px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800">
-                    Mutasi, Opname & Retur
+                <a href="{{ route('gudang.mutasi.index') }}" class="flex items-center px-3 py-2.5 rounded-lg {{ request()->routeIs('gudang.mutasi.*') ? 'bg-emerald-600 text-white font-semibold' : 'text-slate-300 hover:bg-slate-800' }}">
+                    Kartu Mutasi Stok
                 </a>
                 @endhasanyrole
 

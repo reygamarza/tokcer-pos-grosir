@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Gudang\StokController;
 use App\Http\Controllers\Owner\BarangController;
 use App\Http\Controllers\ProfileController;
+use App\Livewire\Gudang\FormPembelian;
 use App\Livewire\Kasir\PosKasir;
 use App\Models\Penjualan;
 use Illuminate\Support\Facades\Route;
@@ -34,7 +36,9 @@ Route::middleware(['auth', 'role:Owner|Kasir'])->prefix('kasir')->name('kasir.')
 
 // 5. MODUL GUDANG & STOK (FR-04, FR-05, FR-20, FR-21, FR-24)
 Route::middleware(['auth', 'role:Owner|Gudang'])->prefix('gudang')->name('gudang.')->group(function () {
-    // Rute Pembelian, Penerimaan Barang, Stok Opname, Retur, Reorder
+    Route::get('/pembelian', [StokController::class, 'indexPembelian'])->name('pembelian.index');
+    Route::get('/pembelian/tambah', FormPembelian::class)->name('pembelian.create');
+    Route::get('/mutasi-stok', [StokController::class, 'indexMutasi'])->name('mutasi.index');
 });
 
 // 6. MODUL KEUANGAN (FR-11 s/d FR-15)
