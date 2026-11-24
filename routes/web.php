@@ -3,13 +3,42 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+// 1. HALAMAN PUBLIK & KATALOG PELANGGAN (FR-17)
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome'); // Nanti diganti KatalogController
+})->name('katalog.index');
+
+// 2. DASHBOARD INTERNAL (Semua staf internal toko)
+Route::middleware(['auth', 'role:Owner|Finance|Gudang|Kasir'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// 3. MODUL OWNER (Data Master, Harga Grosir, Manajemen User, Audit Trail)
+Route::middleware(['auth', 'role:Owner'])->prefix('owner')->name('owner.')->group(function () {
+    // Rute Master Barang, Kategori, Pemasok, Aturan Grosir, User, Audit Log
+});
+
+// 4. MODUL KASIR POS (FR-06, FR-07, FR-08)
+Route::middleware(['auth', 'role:Owner|Kasir'])->prefix('kasir')->name('kasir.')->group(function () {
+    // Rute Halaman POS Kasir & Cetak Struk
+});
+
+// 5. MODUL GUDANG & STOK (FR-04, FR-05, FR-20, FR-21, FR-24)
+Route::middleware(['auth', 'role:Owner|Gudang'])->prefix('gudang')->name('gudang.')->group(function () {
+    // Rute Pembelian, Penerimaan Barang, Stok Opname, Retur, Reorder
+});
+
+// 6. MODUL KEUANGAN (FR-11 s/d FR-15)
+Route::middleware(['auth', 'role:Owner|Finance'])->prefix('keuangan')->name('keuangan.')->group(function () {
+    // Rute Utang-Piutang, Pelunasan, Kas Lain, Laporan Keuangan
+});
+
+// 7. MODUL PELANGGAN ONLINE (FR-18, FR-19)
+Route::middleware(['auth', 'role:Pelanggan'])->prefix('pelanggan')->name('pelanggan.')->group(function () {
+    // Rute Keranjang, Checkout Midtrans, Riwayat Pesanan
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
