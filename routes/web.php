@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Owner\BarangController;
 use App\Http\Controllers\ProfileController;
+use App\Livewire\Kasir\PosKasir;
+use App\Models\Penjualan;
 use Illuminate\Support\Facades\Route;
 
 // 1. HALAMAN PUBLIK & KATALOG PELANGGAN (FR-17)
@@ -23,7 +25,11 @@ Route::middleware(['auth', 'role:Owner'])->prefix('owner')->name('owner.')->grou
 
 // 4. MODUL KASIR POS (FR-06, FR-07, FR-08)
 Route::middleware(['auth', 'role:Owner|Kasir'])->prefix('kasir')->name('kasir.')->group(function () {
-    // Rute Halaman POS Kasir & Cetak Struk
+    Route::get('/', PosKasir::class)->name('pos');
+    Route::get('/struk/{penjualan}', function (Penjualan $penjualan) {
+        $penjualan->load(['kasir', 'detail.kemasan.barang']);
+        return view('kasir.struk', compact('penjualan'));
+    })->name('struk');
 });
 
 // 5. MODUL GUDANG & STOK (FR-04, FR-05, FR-20, FR-21, FR-24)
