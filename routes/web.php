@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Owner\BarangController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,7 +18,7 @@ Route::middleware(['auth', 'role:Owner|Finance|Gudang|Kasir'])->group(function (
 
 // 3. MODUL OWNER (Data Master, Harga Grosir, Manajemen User, Audit Trail)
 Route::middleware(['auth', 'role:Owner'])->prefix('owner')->name('owner.')->group(function () {
-    // Rute Master Barang, Kategori, Pemasok, Aturan Grosir, User, Audit Log
+    Route::resource('barang', BarangController::class)->except(['show', 'edit', 'update']);
 });
 
 // 4. MODUL KASIR POS (FR-06, FR-07, FR-08)
